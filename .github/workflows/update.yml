@@ -1,18 +1,19 @@
-name: Update lotto data
+name: Update lottery data
 
 on:
   schedule:
-    # 추첨은 매주 토요일 약 20:45 KST. 그 이후 시점에 갱신 시도.
-    - cron: "0 13 * * 6"   # 토 13:00 UTC = 토 22:00 KST
-    - cron: "0 1 * * 0"    # 일 01:00 UTC = 일 10:00 KST (보강 재시도)
+    # 연금복권 추첨: 매주 목요일 ~19:05 KST
+    - cron: "0 11 * * 4"   # 목 11:00 UTC = 목 20:00 KST (연금복권)
+    # 로또 추첨: 매주 토요일 ~20:45 KST
+    - cron: "0 13 * * 6"   # 토 13:00 UTC = 토 22:00 KST (로또)
+    - cron: "0 1 * * 0"    # 일 01:00 UTC = 일 10:00 KST (둘 다 보강 재시도)
   workflow_dispatch: {}     # Actions 탭에서 수동 실행 버튼
 
 permissions:
   contents: write
 
-# 동시에 여러 번 돌지 않도록
 concurrency:
-  group: update-lotto
+  group: update-lottery
   cancel-in-progress: false
 
 jobs:
@@ -22,16 +23,19 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Run updater
+      - name: Update lotto (로또6/45)
         run: bash scripts/update.sh
+
+      - name: Update pension (연금복권720+)
+        run: bash scripts/update-pension.sh
 
       - name: Commit if changed
         run: |
           if [[ -n "$(git status --porcelain)" ]]; then
             git config user.name  "github-actions[bot]"
             git config user.email "github-actions[bot]@users.noreply.github.com"
-            git add all.json latest.json
-            git commit -m "chore: update lotto data ($(date -u +%Y-%m-%d))"
+            git add all.json latest.json pension.json pension-latest.json
+            git commit -m "chore: update lottery data ($(date -u +%Y-%m-%d))"
             git push
           else
             echo "변경 없음"

@@ -1,16 +1,23 @@
 # lotto-data
 
-로또 6/45 회차별 추첨결과를 JSON으로 제공하는 데이터 저장소입니다.
-LottoPick 앱이 사용하며, 매주 토요일 [GitHub Actions](.github/workflows/update.yml)로 자동 갱신됩니다.
+로또6/45 · 연금복권720+ 회차별 추첨결과를 JSON으로 제공하는 데이터 저장소입니다.
+LottoPick 앱이 사용하며, [GitHub Actions](.github/workflows/update.yml)로 자동 갱신됩니다.
 
 > 데이터에 오류가 있을 수 있습니다. 정확한 당첨번호는 [동행복권](https://www.dhlottery.co.kr) 공식 사이트에서 확인하세요.
 
 ## 사용 (GitHub Pages)
 
+로또6/45:
 - 전체 회차: `https://papaya5rhw1984.github.io/lotto-data/all.json`
 - 최신 회차: `https://papaya5rhw1984.github.io/lotto-data/latest.json`
 
+연금복권720+:
+- 전체 회차: `https://papaya5rhw1984.github.io/lotto-data/pension.json`
+- 최신 회차: `https://papaya5rhw1984.github.io/lotto-data/pension-latest.json`
+
 ## 형식
+
+### 로또6/45 (`all.json`)
 
 ```json
 {
@@ -28,13 +35,33 @@ LottoPick 앱이 사용하며, 매주 토요일 [GitHub Actions](.github/workflo
 - `divisions[0]` = 1등(1인당 당첨금액 `prize`, 당첨인원 `winners`). 미러 폴백 시에는 2~5등까지 포함될 수 있습니다.
 - `all.json` 은 위 객체들의 배열이며 회차 오름차순으로 정렬됩니다.
 
+### 연금복권720+ (`pension.json`)
+
+```json
+{
+  "round": 319,
+  "date": "2026-06-11",
+  "group": 3,
+  "first": "201327",
+  "bonus": "632035"
+}
+```
+
+- `group` = 1등 당첨 "조"(1~5), `first` = 1등 6자리 번호, `bonus` = 보너스 6자리 번호.
+- `first`/`bonus` 는 앞자리 0을 보존하기 위해 **문자열**입니다 (예: `"060727"`).
+- `pension.json` 은 위 객체들의 배열이며 회차 오름차순으로 정렬됩니다.
+
 ## 자동 갱신 동작
 
-[`scripts/update.sh`](scripts/update.sh):
+[`scripts/update.sh`](scripts/update.sh) — 로또6/45:
 1. 동행복권 공식 API로 새 회차를 시도합니다(GitHub 러너는 해외라 차단될 수 있음).
 2. 막히면 공개 미러(`smok95/lotto`)의 `all.json`으로 폴백합니다.
 
 미러가 중단되면 `scripts/update.sh` 의 `MIRROR` 값을 다른 출처로 바꾸세요.
+
+[`scripts/update-pension.sh`](scripts/update-pension.sh) — 연금복권720+:
+- 동행복권 `pt720/selectPstPt720WnList.do` JSON API를 직접 호출합니다.
+  이 엔드포인트는 해외에서도 접근 가능해 미러가 필요 없습니다.
 
 ## 데이터 출처에 관하여
 

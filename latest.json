@@ -1,41 +1,40 @@
 {
-  "draw_no": 1236,
+  "draw_no": 1237,
   "numbers": [
-    12,
-    18,
-    21,
-    29,
+    10,
+    20,
+    23,
     34,
-    38
+    37,
+    40
   ],
-  "bonus_no": 10,
-  "date": "2026-08-08T00:00:00Z",
+  "bonus_no": 36,
+  "date": "2026-08-15T00:00:00Z",
   "divisions": [
     {
-      "prize": 2441919375,
-      "winners": 11
+      "prize": 1214932680,
+      "winners": 23
     },
     {
-      "prize": 53295860,
-      "winners": 84
+      "prize": 62096560,
+      "winners": 75
     },
     {
-      "prize": 1328049,
-      "winners": 3371
+      "prize": 1243590,
+      "winners": 3745
     },
     {
       "prize": 50000,
-      "winners": 161927
+      "winners": 172132
     },
     {
       "prize": 5000,
-      "winners": 2624850
+      "winners": 2663409
     }
   ],
-  "total_sales_amount": 114070835000,
+  "total_sales_amount": 118363161000,
   "winners_combination": {
-    "auto": 5,
-    "semi_auto": 1,
-    "manual": 5
+    "auto": 14,
+    "manual": 9
   }
 }
